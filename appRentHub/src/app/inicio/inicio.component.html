@@ -1,0 +1,64 @@
+<div
+  #carousel
+  id="videoCarousel"
+  class="carousel slide"
+>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <video
+        #firstVideo
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+        (ended)="nextSlide()"
+        class="d-block w-100"
+      >
+        <source src="video1.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="carousel-item">
+      <video
+        #videoPlayer
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+        (ended)="nextSlide()"
+        class="d-block w-100"
+      >
+        <source src="video2.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="carousel-item">
+      <video
+        #videoPlayer
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+        (ended)="nextSlide()"
+        class="d-block w-100"
+      >
+        <source src="video3.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+
+  <button
+    class="carousel-control-prev"
+    type="button"
+    (click)="prevSlide()"
+  >
+    <span class="carousel-control-prev-icon"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    (click)="nextSlide()"
+  >
+    <span class="carousel-control-next-icon"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>

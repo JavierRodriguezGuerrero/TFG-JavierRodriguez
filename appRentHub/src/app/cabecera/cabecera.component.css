@@ -1,0 +1,26 @@
+/* header.component.css */
+/* 1. Fondo y quitar padding vertical */
+.navbar {
+  background-color: rgba(18, 16, 55, 1);
+}
+.py-0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 2. Logo más grande y con margen lateral */
+.logo {
+  height: 60px;      /* o el valor que prefieras */
+  width: auto;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+/* 3. Resto de enlaces */
+.nav-link {
+  color: #fff;
+}
+.nav-link.active {
+  font-weight: 600;
+  text-decoration: underline;
+}
