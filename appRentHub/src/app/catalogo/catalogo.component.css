@@ -5,3 +5,18 @@
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .15);
   }
 }
+
+.filters-card {
+  border-radius: 1rem;
+}
+.filters-card .form-floating > .form-select {
+  padding-top: 1.6rem;
+  padding-bottom: 0.6rem;
+}
+.filters-card label i {
+  vertical-align: middle;
+}
+/* slider primary */
+.form-range {
+  accent-color: var(--bs-primary);
+}
