@@ -48,7 +48,7 @@
           class="form-range"
           id="priceRange"
           min="0"
-          max="500"
+          max="1000"
           step="10"
           [(ngModel)]="filterMaxPrice"
         />
@@ -84,35 +84,43 @@
 
   <!-- GRID DE TARJETAS -->
   <div class="row">
-    <div class="col-sm-6 col-lg-4 mb-4" *ngFor="let car of displayedCars">
-      <div class="card h-100 shadow-sm">
-        <img
-          [src]="car.imageUrl"
-          class="card-img-top"
-          [alt]="car.name"
-          style="object-fit: cover; height: 180px;"
-        />
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <h5 class="card-title mb-1">{{ car.name }}</h5>
-              <small class="text-muted">{{ car.brand }}</small>
-            </div>
-            <div class="text-end">
-              <span class="fw-bold text-primary">
-                {{ car.price }}€/mes
-              </span>
+    <div
+      class="col-sm-6 col-lg-4 mb-4"
+      *ngFor="let car of displayedCars"
+    >
+      <a
+        [routerLink]="['/vehiculos', car.idvehiculo]"
+        class="text-decoration-none"
+      >
+        <div class="card h-100 shadow-sm">
+          <img
+            [src]="car.imageUrl"
+            class="card-img-top"
+            [alt]="car.name"
+            style="object-fit: cover; height: 180px;"
+          />
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title mb-1">{{ car.name }}</h5>
+                <small class="text-muted">{{ car.brand }}</small>
+              </div>
+              <div class="text-end">
+                <span class="fw-bold text-primary">
+                  {{ car.price }}€/mes
+                </span>
+              </div>
             </div>
           </div>
+          <div
+            class="card-footer bg-transparent border-top d-flex justify-content-between"
+          >
+            <small class="text-muted">{{ car.fuel }}</small>
+            <small class="text-muted">{{ car.category }}</small>
+            <small class="text-muted">{{ car.transmission }}</small>
+          </div>
         </div>
-        <div
-          class="card-footer bg-transparent border-top d-flex justify-content-between"
-        >
-          <small class="text-muted">{{ car.fuel }}</small>
-          <small class="text-muted">{{ car.category }}</small>
-          <small class="text-muted">{{ car.transmission }}</small>
-        </div>
-      </div>
+      </a>
     </div>
   </div>
 

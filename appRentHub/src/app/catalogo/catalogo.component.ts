@@ -1,6 +1,7 @@
 import { Component, OnInit }        from '@angular/core';
 import { CommonModule }             from '@angular/common';
 import { FormsModule }              from '@angular/forms';
+import { RouterModule }             from '@angular/router';
 import { HttpClient }               from '@angular/common/http';
 import { map }                      from 'rxjs/operators';
 import { Observable }               from 'rxjs';
@@ -18,6 +19,7 @@ interface CarRaw {
 }
 
 interface Car {
+  idvehiculo:  number;
   name:        string;    // raw.marca
   brand:       string;    // raw.modelo
   price:       number;    // raw.precioMes
@@ -30,7 +32,7 @@ interface Car {
 @Component({
   selector: 'app-catalogo',
   imports: [CommonModule,             
-    FormsModule ],
+    FormsModule, RouterModule ],
     standalone: true, 
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css'
@@ -58,6 +60,7 @@ export class CatalogoComponent implements OnInit{
     return this.http.get<CarRaw[]>(this.API_URL).pipe(
       map(raws =>
         raws.map(raw => ({
+          idvehiculo:   raw.idvehiculo, 
           name:         raw.modelo,
           brand:        raw.marca,
           price:        raw.precioMes,
