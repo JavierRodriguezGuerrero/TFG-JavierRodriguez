@@ -1,37 +1,75 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule }  from '@angular/forms';
+import { Component, OnInit }        from '@angular/core';
+import { CommonModule }             from '@angular/common';
+import { FormsModule }              from '@angular/forms';
+import { HttpClient }               from '@angular/common/http';
+import { map }                      from 'rxjs/operators';
+import { Observable }               from 'rxjs';
+
+
+interface CarRaw {
+  idvehiculo:   number;
+  marca:        string;
+  modelo:       string;
+  precioMes:    number;
+  fuel:         string;
+  category:     string;
+  transmission: string;
+  imagenes:     string[];
+}
 
 interface Car {
-  name: string;
-  brand: string;
-  price: number;
-  fuel: string;
-  category: string;
-  transmission: string;
-  imageUrl: string;
+  name:        string;    // raw.marca
+  brand:       string;    // raw.modelo
+  price:       number;    // raw.precioMes
+  fuel:        string;
+  category:    string;
+  transmission:string;
+  imageUrl:    string;
 }
 
 @Component({
   selector: 'app-catalogo',
   imports: [CommonModule,             
     FormsModule ],
+    standalone: true, 
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css'
 })
-export class CatalogoComponent {
-  cars: Car[] = [
-    { name: 'Aygo X Cross', brand: 'Toyota', price: 288, fuel: 'Gasolina', category: 'Compacto', transmission: 'Manual', imageUrl: 'https://via.placeholder.com/300x180' },
-    { name: '208',         brand: 'Peugeot', price: 296, fuel: 'Gasolina', category: 'Compacto', transmission: 'Manual', imageUrl: 'https://via.placeholder.com/300x180' },
-    { name: 'Corsa',       brand: 'Opel',    price: 298, fuel: 'Gasolina', category: 'Compacto', transmission: 'Manual', imageUrl: 'https://via.placeholder.com/300x180' },
-    { name: 'Yaris',       brand: 'Toyota',  price: 348, fuel: 'Híbrido',  category: 'Compacto', transmission: 'Automático', imageUrl: 'https://via.placeholder.com/300x180' },
-    { name: 'Clio',        brand: 'Renault', price: 352, fuel: 'Diésel',   category: 'Compacto', transmission: 'Manual', imageUrl: 'https://via.placeholder.com/300x180' },
-    { name: 'Frontera',    brand: 'Opel',    price: 372, fuel: 'Híbrido',  category: 'SUV',      transmission: 'Automático', imageUrl: 'https://via.placeholder.com/300x180' },
-  ];
+export class CatalogoComponent implements OnInit{
+  cars: Car[] = [];
 
   filterBrand = '';
   filterMaxPrice: number | null = null;
   sortOption: '' | 'priceAsc' | 'priceDesc' | 'name' = '';
+
+
+  private readonly API_URL = 'http://localhost:8080/vehiculos';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchCars().subscribe({
+      next: cars => this.cars = cars,
+      error: err  => console.error('Error cargando vehículos:', err)
+    });
+  }
+
+  private fetchCars(): Observable<Car[]> {
+    return this.http.get<CarRaw[]>(this.API_URL).pipe(
+      map(raws =>
+        raws.map(raw => ({
+          name:         raw.modelo,
+          brand:        raw.marca,
+          price:        raw.precioMes,
+          fuel:         raw.fuel,
+          category:     raw.category,
+          transmission: raw.transmission,
+          imageUrl:     raw.imagenes?.[0] ?? 'https://via.placeholder.com/300x180'
+        }))
+      )
+    );
+  }
+
 
   get brands(): string[] {
     return Array.from(new Set(this.cars.map(c => c.brand)));
