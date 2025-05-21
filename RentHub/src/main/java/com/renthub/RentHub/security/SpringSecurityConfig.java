@@ -99,6 +99,8 @@ public class SpringSecurityConfig {
           .csrf(csrf -> csrf.disable())
           // 2) Define qué rutas son públicas
           .authorizeHttpRequests(auth -> auth
+            // Recursos estáticos (imágenes) públicos
+            .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
             // Permite GET (y opcionalmente POST, PUT, DELETE) sobre /vehiculos y subrutas
             .requestMatchers(HttpMethod.GET,    "/vehiculos",      "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.POST,   "/vehiculos",      "/vehiculos/**").permitAll()

@@ -46,7 +46,7 @@ public class VehiculoService {
     }
     
     
-    @Value("${app.upload.dir:${user.dir}/../appRentHub/public}")
+    @Value("${app.upload.dir:${user.dir}/src/main/resources/static/images}")
     private String uploadDir;
     
     public Vehiculo saveWithImages(
@@ -81,7 +81,7 @@ public class VehiculoService {
             Path target = Paths.get(uploadDir).resolve(filename);
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
             // Guardamos la ruta relativa (servirá como URL)
-            urls.add(filename);
+            urls.add("http://localhost:8080/images/" + filename);
         }
         v.setImagenes(urls);
 
