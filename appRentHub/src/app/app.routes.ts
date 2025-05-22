@@ -3,13 +3,18 @@ import { CatalogoComponent } from './catalogo/catalogo.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { VehiculoDetailComponent } from './vehiculo-detail/vehiculo-detail.component';
 import { AdminComponent } from './admin/admin.component';
+import { LoginComponent }           from './login/login.component';
+import { RegisterComponent }        from './register/register.component';
+import { AuthGuard }                from './guards/auth.guard';
 
 export const routes: Routes = [
 
     {path: '', component:InicioComponent},
     {path: 'catalogo', component:CatalogoComponent},
     { path: 'vehiculos/:id', component: VehiculoDetailComponent },
-    { path: 'admin',                component: AdminComponent },
+    { path: 'admin',                component: AdminComponent,canActivate: [AuthGuard] },
+    { path: 'login',      component: LoginComponent },
+    { path: 'register',   component: RegisterComponent },
     { path: '**',         redirectTo: '' }
 
 

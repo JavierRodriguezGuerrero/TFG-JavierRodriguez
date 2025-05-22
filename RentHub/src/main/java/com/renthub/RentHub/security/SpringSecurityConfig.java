@@ -2,10 +2,12 @@ package com.renthub.RentHub.security;
 
 
 import com.renthub.RentHub.services.JpaUserDetailsService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,6 +20,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SpringSecurityConfig {
@@ -95,17 +100,20 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+          .cors(withDefaults())
           // 1) Deshabilita CSRF para tu API REST
           .csrf(csrf -> csrf.disable())
           // 2) Define qué rutas son públicas
           .authorizeHttpRequests(auth -> auth
             // Recursos estáticos (imágenes) públicos
             .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
             // Permite GET (y opcionalmente POST, PUT, DELETE) sobre /vehiculos y subrutas
             .requestMatchers(HttpMethod.GET,    "/vehiculos",      "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.POST,   "/vehiculos",      "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.PUT,    "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.DELETE, "/vehiculos/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
             // Si tu API estuviera bajo /api/cars, añade aquí también:
             // .requestMatchers("/api/cars/**").permitAll()
             // El resto de rutas requiere autenticación
@@ -113,6 +121,11 @@ public class SpringSecurityConfig {
           )
           // 3) Usa HTTP Basic (no formulario) para el resto de endpoints autenticados
           .httpBasic(withDefaults())
+                .logout(logout -> logout
+                    .logoutUrl("/auth/logout")
+                    .logoutSuccessHandler((req, res, auth) -> res.setStatus(HttpStatus.OK.value()))
+                    .permitAll()
+                  )
           // 4) Stateless: no mantenemos sesión en servidor
           .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -130,6 +143,22 @@ public class SpringSecurityConfig {
 
         return new ProviderManager(authProvider);
     }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration config = new CorsConfiguration();
+      config.setAllowedOrigins(List.of("http://localhost:4200"));
+      config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+      config.setAllowedHeaders(List.of("*"));
+      config.setAllowCredentials(true);
+      config.setMaxAge(3600L);
+
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      // aplica CORS global a todas las rutas
+      source.registerCorsConfiguration("/**", config);
+      return source;
+    }
+    
   
 }
 

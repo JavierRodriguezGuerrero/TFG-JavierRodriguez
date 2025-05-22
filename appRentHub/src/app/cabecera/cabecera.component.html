@@ -1,9 +1,9 @@
-<!-- header.component.html -->
+<!-- src/app/header/header.component.html -->
 <nav class="navbar navbar-expand-lg navbar-dark py-0">
   <div class="container-fluid">
     <!-- Logo a la izquierda con espacio -->
     <a class="navbar-brand ms-3 me-auto" routerLink="/">
-      <img src="logorent.jpg" alt="Logo" class="logo">
+      <img src="logorent.jpg" alt="Logo" class="logo" />
     </a>
 
     <!-- Botón hamburguesa para móvil -->
@@ -37,7 +37,16 @@
     <!-- Icono de usuario a la derecha -->
     <div class="d-flex">
       <a class="nav-link position-relative me-3" routerLink="/usuario">
-        <i class="bi bi-person-circle" style="font-size: 1.8rem;"></i>
+        <!-- Muestra diferente icono según login -->
+        <i
+          *ngIf="!auth.isLogged(); else loggedTpl"
+          class="bi bi-person-circle"
+          style="font-size: 1.8rem;"
+        ></i>
+        <ng-template #loggedTpl>
+          <i class="bi bi-person-check-fill" style="font-size: 1.8rem;"></i>
+          <button (click)="auth.logout()" *ngIf="auth.isLogged()">Logout</button>
+        </ng-template>
       </a>
     </div>
   </div>

@@ -38,7 +38,7 @@ public class User {
 
     @Column(unique = true)
     @NotBlank
-    @Size(min = 4, max = 12)
+    @Size(min = 4, max = 120)
     private String username;
 
     @NotBlank
@@ -144,9 +144,9 @@ public class User {
         this.enabled = enabled;
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
+ //   public boolean isAdmin() {
+   //     return admin;
+    //}
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
@@ -194,5 +194,9 @@ public class User {
         alquiler.setUser(null);
     }
     
-    
+   @Transient
+    public boolean isAdmin() {
+      return roles.stream().anyMatch(r -> "ROLE_ADMIN".equals(r.getName()));
+    }
+  
 }

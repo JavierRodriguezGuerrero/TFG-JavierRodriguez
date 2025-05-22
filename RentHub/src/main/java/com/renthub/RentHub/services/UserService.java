@@ -13,7 +13,9 @@ import com.renthub.RentHub.models.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +38,13 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+     public UserService(UserRepository u, RoleRepository r, PasswordEncoder e) {
+        this.userRepository = u;
+        this.roleRepository = r;
+        this.passwordEncoder  = e;
+      }
+    
     
     public List<User> findAll() {
         return (List<User>) userRepository.findAll();
@@ -69,5 +78,40 @@ public class UserService {
         usuario.setRoles(roles);
         return userRepository.save(usuario);
     }
+    
+    /** Registro público */
+  public User register(String username, String rawPassword,
+                       String name, String lastName) {
+    if (userRepository.findByUsername(username).isPresent()) {
+      throw new RuntimeException("El usuario ya existe");
+    }
+    User u = new User();
+    u.setUsername(username);
+    u.setPassword(passwordEncoder.encode(rawPassword));
+    u.setName(name);
+    u.setLastName(lastName);
+    // rol por defecto
+    Role roleUser = roleRepository.findByName("ROLE_AUTONOMA")
+                     .orElseThrow(() -> new RuntimeException("Roles no inicializados"));
+    u.getRoles().add(roleUser);
+    return userRepository.save(u);
+  }
+
+  /** Spring Security: carga de usuario para la autenticación */
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User u = userRepository.findByUsername(username)
+             .orElseThrow(() -> new UsernameNotFoundException(username));
+    return new org.springframework.security.core.userdetails.User(
+      u.getUsername(),
+      u.getPassword(),
+      u.isEnabled(),
+      true, true, true,
+      u.getRoles().stream()
+         .map(r -> new SimpleGrantedAuthority(r.getName()))
+         .collect(Collectors.toList())
+    );
+  }
+    
+    
 
 }
