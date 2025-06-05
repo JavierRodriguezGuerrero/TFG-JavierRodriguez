@@ -4,6 +4,7 @@
  */
 package com.renthub.RentHub.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +45,7 @@ public class Alquiler {
         referencedColumnName = "iduser",
         nullable = true              // el alquiler podría no estar asignado aún
     )
+    @JsonIgnoreProperties("alquileres")
     private User user;
     
     
@@ -60,6 +62,7 @@ public class Alquiler {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
+    @JsonIgnoreProperties("alquiler")
     private List<Pago> pagos = new ArrayList<>();
     
     

@@ -4,6 +4,7 @@
  */
 package com.renthub.RentHub.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +45,7 @@ public class Pago {
         referencedColumnName = "idalquiler",
         nullable = false
     )
+    @JsonIgnoreProperties("pagos")
     private Alquiler alquiler;
 
     public Pago(Date fechaPago, Double cantidad, String tarjeta, int cvv, String fechaTarjeta, Alquiler alquiler) {

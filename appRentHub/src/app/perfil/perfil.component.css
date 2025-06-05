@@ -1,0 +1,16 @@
+/* src/app/perfil/perfil.component.css */
+
+/* Solo estilos básicos para dar margen y centrar */
+.card-body img {
+  object-fit: cover;
+}
+
+/* Ajustar un poco la tarjeta de la izquierda */
+.card .rounded-circle {
+  border: 2px solid #ccc;
+}
+
+/* Botones un poco más anchos */
+.btn {
+  width: 100%;
+}

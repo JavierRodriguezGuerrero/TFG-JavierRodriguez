@@ -1,0 +1,109 @@
+<!-- src/app/perfil/perfil.component.html -->
+<div class="container my-4">
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+    <p>Cargando perfil…</p>
+  </div>
+
+  <div *ngIf="!loading && errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage" class="row">
+    <!-- === Panel IZQUIERDO: Información básica del usuario === -->
+    <div class="col-lg-4 col-md-5 col-12 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <div class="mb-3">
+            <img src="assets/avatar-placeholder.png" alt="Avatar" class="rounded-circle" width="100" height="100" />
+          </div>
+          <h5 class="card-title">{{ user.name }} {{ user.lastName }}</h5>
+          <p class="card-text text-muted">{{ user.username }}</p>
+          <hr />
+
+          <!-- Dirección -->
+          <div class="text-start mb-3">
+            <strong>Dirección:</strong>
+            <div *ngIf="user.direccion; else noDireccion">
+              <small class="d-block">
+                {{ user.direccion.calle }}, {{ user.direccion.ciudad }}
+              </small>
+              <small class="d-block">
+                {{ user.direccion.provincia }}, {{ user.direccion.codigoPostal }}
+              </small>
+              <small class="d-block">
+                {{ user.direccion.pais }}
+              </small>
+            </div>
+            <ng-template #noDireccion>
+              <small class="text-danger">No tienes dirección asignada</small>
+            </ng-template>
+          </div>
+
+          <!-- Botón para añadir o editar Dirección -->
+          <div class="d-grid">
+            <a
+              *ngIf="!user.direccion"
+              routerLink="/direccion/nueva"
+              class="btn btn-primary"
+            >
+              Añadir Dirección
+            </a>
+            <a
+              *ngIf="user.direccion"
+              routerLink="/direccion/editar/{{ user.direccion.iddireccion }}"
+              class="btn btn-outline-secondary"
+            >
+              Editar Dirección
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === Panel DERECHO: Vehículos en alquiler === -->
+    <div class="col-lg-8 col-md-7 col-12">
+      <h3 class="mb-4 text-center">MIS VEHÍCULOS</h3>
+      <div class="row g-3">
+        <div class="col-lg-6 col-md-12 mb-4" *ngFor="let al of user.alquileres">
+          <div class="card shadow-sm h-100">
+            <!-- Fecha de renovación en la cabecera de la tarjeta -->
+            <div class="card-header bg-transparent">
+              <small class="text-muted">
+                Fecha de renovación: {{ getRenewalDate(al) }}
+              </small>
+            </div>
+            <img
+              [src]="al.vehiculo.imagenes[0]"
+              class="card-img-top"
+              [alt]="al.vehiculo.marca + ' ' + al.vehiculo.modelo"
+              style="object-fit: cover; height: 220px;"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ al.vehiculo.marca }} {{ al.vehiculo.modelo }}</h5>
+              <p class="card-text">
+                <small class="text-muted">
+                  {{ al.vehiculo.category }} · {{ al.vehiculo.fuel }} · {{ al.vehiculo.transmission }}
+                </small>
+              </p>
+            </div>
+            <div class="card-footer bg-transparent text-center">
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="onCancelRenewal(al)"
+                [disabled]="!al.renovacionAutomatica"
+              >
+                Cancelar Renovación
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Si no hay alquileres, mostramos un mensaje -->
+        <div *ngIf="user.alquileres.length === 0" class="col-12 text-center mt-5">
+          <p class="text-muted">No tienes vehículos alquilados actualmente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

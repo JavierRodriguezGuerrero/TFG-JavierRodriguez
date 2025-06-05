@@ -113,6 +113,9 @@ public class SpringSecurityConfig {
             .requestMatchers(HttpMethod.POST,   "/vehiculos",      "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.PUT,    "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.DELETE, "/vehiculos/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+        // Cancelar renovación requiere autenticación
+            .requestMatchers(HttpMethod.PUT, "/alquiler/**").authenticated()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             // Si tu API estuviera bajo /api/cars, añade aquí también:
             // .requestMatchers("/api/cars/**").permitAll()

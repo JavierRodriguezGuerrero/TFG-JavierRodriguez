@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -112,6 +114,28 @@ public class UserService {
     );
   }
     
-    
+    public User getCurrentUserWithRelations() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        // Asumimos que User.alquileres se carga Lazy. Para evitar problemas,
+        // podemos forzar la carga (por ejemplo, accediendo a user.getAlquileres().size())
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Forzamos carga de colecciones: dirección ya está en EAGER (OneToOne),
+        // pero alquileres es LAZY. Podemos simplemente invocar size() para que se cargue.
+        if (user.getAlquileres() != null) {
+            user.getAlquileres().size();
+            // Y para cada alquiler, queremos que su vehiculo e imágenes estén disponibles:
+            user.getAlquileres().forEach(al -> {
+                if (al.getVehiculo() != null) {
+                    al.getVehiculo().getImagenes().size();
+                }
+            });
+        }
+
+        return user;
+    }
 
 }

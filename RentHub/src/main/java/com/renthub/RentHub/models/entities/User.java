@@ -4,6 +4,7 @@
  */
 package com.renthub.RentHub.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -79,6 +80,7 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    @JsonIgnoreProperties("user")
     private List<Alquiler> alquileres = new ArrayList<>();
     
     

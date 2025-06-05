@@ -8,6 +8,7 @@ import { RegisterComponent }        from './register/register.component';
 import { AuthGuard }                from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { ComparadorComponent } from './comparador/comparador.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 export const routes: Routes = [
 
@@ -19,6 +20,11 @@ export const routes: Routes = [
         component: AdminComponent,
         canActivate: [RoleGuard],
         data: { roles: ['ROLE_ADMIN'] }
+    },
+    {
+        path: 'perfil',
+        component: PerfilComponent,
+        canActivate: [AuthGuard]
     },
     { path: 'login',      component: LoginComponent },
     { path: 'register',   component: RegisterComponent },
