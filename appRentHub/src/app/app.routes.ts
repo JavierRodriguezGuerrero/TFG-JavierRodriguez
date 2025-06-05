@@ -7,6 +7,7 @@ import { LoginComponent }           from './login/login.component';
 import { RegisterComponent }        from './register/register.component';
 import { AuthGuard }                from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
+import { ComparadorComponent } from './comparador/comparador.component';
 
 export const routes: Routes = [
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
     },
     { path: 'login',      component: LoginComponent },
     { path: 'register',   component: RegisterComponent },
+    { path: 'comparador',   component: ComparadorComponent },
     { path: '**',         redirectTo: '' }
 
 

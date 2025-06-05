@@ -1,0 +1,229 @@
+<!-- src/app/comparador/comparador.component.html -->
+<div class="container-fluid my-4">
+  <div class="row">
+    <!-- Columna izquierda: agregamos border-end para la línea divisoria -->
+    <div class="col-lg-6 col-12 mb-4 border-end border-2 border-secondary">
+      <h4 class="text-center">Comparador - Lado Izquierdo</h4>
+
+      <!-- Detalle seleccionado -->
+      <div *ngIf="leftCar; else leftPlaceholder" class="mb-3">
+        <div class="card">
+          <div class="card-body">
+            <!-- Carrusel de imágenes -->
+            <div id="carouselLeft" class="carousel slide mb-3" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button
+                  *ngFor="let img of leftCar.images; let i = index"
+                  type="button"
+                  data-bs-target="#carouselLeft"
+                  [attr.data-bs-slide-to]="i"
+                  [class.active]="i === 0"
+                  aria-current="true"
+                  [attr.aria-label]="'Slide ' + (i + 1)"
+                ></button>
+              </div>
+              <div class="carousel-inner rounded">
+                <div
+                  *ngFor="let img of leftCar.images; let i = index"
+                  class="carousel-item"
+                  [class.active]="i === 0"
+                >
+                  <img
+                    [src]="img"
+                    class="d-block w-100"
+                    [alt]="leftCar.name + ' imagen ' + (i+1)"
+                    style="height: 300px; object-fit: cover;"
+                  />
+                </div>
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselLeft"
+                data-bs-slide="prev"
+              >
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselLeft"
+                data-bs-slide="next"
+              >
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            </div>
+
+            <!-- Tabla de datos -->
+            <h5 class="card-title">{{ leftCar.brand }} {{ leftCar.name }}</h5>
+            <table class="table table-sm table-bordered mb-3">
+              <tbody>
+                <tr>
+                  <th scope="row">Precio</th>
+                  <td>{{ leftCar.price }} €/mes</td>
+                </tr>
+                <tr>
+                  <th scope="row">Combustible</th>
+                  <td>{{ leftCar.fuel }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Categoría</th>
+                  <td>{{ leftCar.category }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Transmisión</th>
+                  <td>{{ leftCar.transmission }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              (click)="clearSelection('left')"
+            >
+              Quitar
+            </button>
+          </div>
+        </div>
+      </div>
+      <ng-template #leftPlaceholder>
+        <p class="text-center text-muted">Seleccione un vehículo</p>
+      </ng-template>
+
+      <!-- Lista de vehículos -->
+      <div class="row">
+        <div class="col-sm-6 col-lg-4 mb-4" *ngFor="let car of cars">
+          <div
+            class="card h-100 shadow-sm cursor-pointer"
+            (click)="selectVehicle(car, 'left')"
+            [class.border-primary]="leftCar?.idvehiculo === car.idvehiculo"
+          >
+            <img
+              [src]="car.images[0]"
+              class="card-img-top"
+              [alt]="car.name"
+              style="object-fit: cover; height: 140px;"
+            />
+            <div class="card-body">
+              <h6 class="card-title mb-1">{{ car.brand }} {{ car.name }}</h6>
+              <p class="card-text text-primary fw-bold">{{ car.price }} €/mes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="col-lg-6 col-12 mb-4">
+      <h4 class="text-center">Comparador - Lado Derecho</h4>
+
+      <!-- Detalle seleccionado -->
+      <div *ngIf="rightCar; else rightPlaceholder" class="mb-3">
+        <div class="card">
+          <div class="card-body">
+            <!-- Carrusel de imágenes -->
+            <div id="carouselRight" class="carousel slide mb-3" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button
+                  *ngFor="let img of rightCar.images; let i = index"
+                  type="button"
+                  data-bs-target="#carouselRight"
+                  [attr.data-bs-slide-to]="i"
+                  [class.active]="i === 0"
+                  aria-current="true"
+                  [attr.aria-label]="'Slide ' + (i + 1)"
+                ></button>
+              </div>
+              <div class="carousel-inner rounded">
+                <div
+                  *ngFor="let img of rightCar.images; let i = index"
+                  class="carousel-item"
+                  [class.active]="i === 0"
+                >
+                  <img
+                    [src]="img"
+                    class="d-block w-100"
+                    [alt]="rightCar.name + ' imagen ' + (i+1)"
+                    style="height: 300px; object-fit: cover;"
+                  />
+                </div>
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselRight"
+                data-bs-slide="prev"
+              >
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselRight"
+                data-bs-slide="next"
+              >
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            </div>
+
+            <!-- Tabla de datos -->
+            <h5 class="card-title">{{ rightCar.brand }} {{ rightCar.name }}</h5>
+            <table class="table table-sm table-bordered mb-3">
+              <tbody>
+                <tr>
+                  <th scope="row">Precio</th>
+                  <td>{{ rightCar.price }} €/mes</td>
+                </tr>
+                <tr>
+                  <th scope="row">Combustible</th>
+                  <td>{{ rightCar.fuel }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Categoría</th>
+                  <td>{{ rightCar.category }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Transmisión</th>
+                  <td>{{ rightCar.transmission }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              (click)="clearSelection('right')"
+            >
+              Quitar
+            </button>
+          </div>
+        </div>
+      </div>
+      <ng-template #rightPlaceholder>
+        <p class="text-center text-muted">Seleccione un vehículo</p>
+      </ng-template>
+
+      <!-- Lista de vehículos -->
+      <div class="row">
+        <div class="col-sm-6 col-lg-4 mb-4" *ngFor="let car of cars">
+          <div
+            class="card h-100 shadow-sm cursor-pointer"
+            (click)="selectVehicle(car, 'right')"
+            [class.border-success]="rightCar?.idvehiculo === car.idvehiculo"
+          >
+            <img
+              [src]="car.images[0]"
+              class="card-img-top"
+              [alt]="car.name"
+              style="object-fit: cover; height: 140px;"
+            />
+            <div class="card-body">
+              <h6 class="card-title mb-1">{{ car.brand }} {{ car.name }}</h6>
+              <p class="card-text text-success fw-bold">{{ car.price }} €/mes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
