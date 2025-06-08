@@ -1,0 +1,79 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header text-center">
+          <h4>Pago con Tarjeta</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!-- Número de tarjeta -->
+            <div class="mb-3">
+              <label class="form-label">Número de tarjeta</label>
+              <input
+                formControlName="cardNumber"
+                type="text"
+                class="form-control"
+                placeholder="1234123412341234"
+              />
+              <div
+                *ngIf="form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched"
+                class="text-danger small"
+              >
+                Debe ser un número de 16 dígitos.
+              </div>
+            </div>
+
+            <!-- Expiración y CVV -->
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Expiración (MM/AA)</label>
+                <input
+                  formControlName="expiry"
+                  type="text"
+                  class="form-control"
+                  placeholder="MM/AA"
+                />
+                <div
+                  *ngIf="form.get('expiry')?.invalid && form.get('expiry')?.touched"
+                  class="text-danger small"
+                >
+                  Formato inválido.
+                </div>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">CVV</label>
+                <input
+                  formControlName="cvv"
+                  type="password"
+                  class="form-control"
+                  placeholder="123"
+                />
+                <div
+                  *ngIf="form.get('cvv')?.invalid && form.get('cvv')?.touched"
+                  class="text-danger small"
+                >
+                  3 dígitos.
+                </div>
+              </div>
+            </div>
+
+            <!-- Error genérico -->
+            <div *ngIf="error" class="alert alert-danger">
+              {{ error }}
+            </div>
+
+            <!-- Botón -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              [disabled]="form.invalid || loading"
+            >
+              {{ loading ? 'Procesando...' : 'Pagar y Alquilar' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

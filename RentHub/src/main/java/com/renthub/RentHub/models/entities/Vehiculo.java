@@ -58,6 +58,8 @@ public class Vehiculo {
     @Column(name = "url")
     private List<String> imagenes = new ArrayList<>();
     
+    private boolean disponible=true;
+    
 
     public Vehiculo(String marca, String modelo, String matricula, String tipo, Double precioMes, String km, String descripcion) {
         this.marca = marca;
@@ -182,6 +184,14 @@ public class Vehiculo {
 
     public void setTransmission(String transmission) {
         this.transmission = transmission;
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
     }
     
     

@@ -5,11 +5,16 @@
 package com.renthub.RentHub.controllers;
 
 import com.renthub.RentHub.services.AlquilerService;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,4 +38,21 @@ public class AlquilerController {
         alquilerService.cancelRenewal(idAlquiler);
         return ResponseEntity.noContent().build();
     }
+    
+    @PostMapping
+    public ResponseEntity<Void> rent(
+        @RequestBody Map<String,Object> body,
+        @AuthenticationPrincipal UserDetails userDetails
+    ) {
+      // Extraemos y validamos las entradas
+      Long vehiculoId = Long.valueOf(body.get("vehiculoId").toString());
+      String cardNumber = body.get("cardNumber").toString();
+      String expiry     = body.get("expiry").toString();
+      String cvv        = body.get("cvv").toString();
+
+      // (Aquí podrías lanzar excepciones si no cumplen patrón, por ejemplo)
+      alquilerService.rentVehicle(vehiculoId, cardNumber, expiry, cvv, userDetails.getUsername());
+      return ResponseEntity.ok().build();
+    }
+    
 }

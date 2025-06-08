@@ -9,6 +9,7 @@ import { AuthGuard }                from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { ComparadorComponent } from './comparador/comparador.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { PurchaseComponent } from './purchase/purchase.component';
 
 export const routes: Routes = [
 
@@ -24,6 +25,11 @@ export const routes: Routes = [
     {
         path: 'perfil',
         component: PerfilComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'compra/:idvehiculo',
+        component: PurchaseComponent,
         canActivate: [AuthGuard]
     },
     { path: 'login',      component: LoginComponent },
