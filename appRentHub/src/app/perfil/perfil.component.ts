@@ -4,6 +4,7 @@ import { UserService, UserProfile, Direccion, Alquiler } from '../services/user.
 import { AlquilerService }         from '../services/alquiler.service';
 import { RouterModule }            from '@angular/router';
 import { formatDate }              from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-perfil',
@@ -20,7 +21,8 @@ export class PerfilComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private alquilerService: AlquilerService
+    private alquilerService: AlquilerService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -62,4 +64,10 @@ export class PerfilComponent implements OnInit {
       }
     });
   }
+
+  onLogout(): void {
+    this.authService.logout();
+  }
+
+
 }

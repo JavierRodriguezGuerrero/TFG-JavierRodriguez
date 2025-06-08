@@ -1,109 +1,124 @@
-<!-- src/app/perfil/perfil.component.html -->
 <div class="container my-4">
+  <!-- Loading / error -->
   <div *ngIf="loading" class="text-center py-5">
     <div class="spinner-border" role="status"></div>
     <p>Cargando perfil…</p>
   </div>
-
   <div *ngIf="!loading && errorMessage" class="alert alert-danger">
     {{ errorMessage }}
   </div>
 
-  <div *ngIf="!loading && !errorMessage" class="row">
-    <!-- === Panel IZQUIERDO: Información básica del usuario === -->
-    <div class="col-lg-4 col-md-5 col-12 mb-4">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          <div class="mb-3">
-            <img src="assets/avatar-placeholder.png" alt="Avatar" class="rounded-circle" width="100" height="100" />
-          </div>
-          <h5 class="card-title">{{ user.name }} {{ user.lastName }}</h5>
-          <p class="card-text text-muted">{{ user.username }}</p>
-          <hr />
+  <!-- Contenido principal -->
+  <div *ngIf="!loading && !errorMessage">
 
-          <!-- Dirección -->
-          <div class="text-start mb-3">
-            <strong>Dirección:</strong>
-            <div *ngIf="user.direccion; else noDireccion">
-              <small class="d-block">
-                {{ user.direccion.calle }}, {{ user.direccion.ciudad }}
-              </small>
-              <small class="d-block">
-                {{ user.direccion.provincia }}, {{ user.direccion.codigoPostal }}
-              </small>
-              <small class="d-block">
-                {{ user.direccion.pais }}
-              </small>
+    <!-- TÍTULO MIS VEHÍCULOS -->
+    <div class="row mb-4">
+      <div class="col text-center">
+        <h3>MIS VEHÍCULOS</h3>
+      </div>
+    </div>
+
+    <!-- FILA con dos columnas: PERFIL | GRID VEHÍCULOS -->
+    <div class="row gx-4 align-items-start">
+
+      <!-- Columna IZQUIERDA: Perfil de usuario -->
+      <div class="col-lg-4 col-md-5 col-12 mb-4 d-flex">
+        <div class="card perfil-card shadow-sm h-100 w-100">
+          <div class="card-header bg-transparent border-bottom-0 text-center">
+            <img
+              src="assets/avatar-placeholder.png"
+              alt="Avatar"
+              class="rounded-circle"
+              width="80"
+              height="80"
+            />
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">{{ user.name }} {{ user.lastName }}</h5>
+            <p class="card-text text-muted mb-3">{{ user.username }}</p>
+            <hr class="my-3" />
+            <div class="text-start">
+              <strong>Dirección:</strong>
+              <ng-container *ngIf="user.direccion; else noDir">
+                <p class="mb-0">
+                  {{ user.direccion.calle }}, {{ user.direccion.ciudad }}
+                </p>
+                <p class="mb-0">
+                  {{ user.direccion.provincia }}, {{ user.direccion.codigoPostal }}
+                </p>
+                <p class="mb-0">{{ user.direccion.pais }}</p>
+              </ng-container>
+              <ng-template #noDir>
+                <p class="text-danger mb-0">No tienes dirección asignada</p>
+              </ng-template>
             </div>
-            <ng-template #noDireccion>
-              <small class="text-danger">No tienes dirección asignada</small>
-            </ng-template>
           </div>
-
-          <!-- Botón para añadir o editar Dirección -->
-          <div class="d-grid">
+          <div class="card-footer bg-transparent border-top-0 text-center">
             <a
               *ngIf="!user.direccion"
               routerLink="/direccion/nueva"
-              class="btn btn-primary"
+              class="btn btn-primary w-100"
             >
               Añadir Dirección
             </a>
             <a
               *ngIf="user.direccion"
-              routerLink="/direccion/editar/{{ user.direccion.iddireccion }}"
-              class="btn btn-outline-secondary"
+              [routerLink]="['/direccion/editar', user.direccion.iddireccion]"
+              class="btn btn-outline-secondary w-100"
             >
               Editar Dirección
             </a>
+            <button class="btn btn-danger w-100" (click)="onLogout()">
+              Cerrar sesión
+            </button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- === Panel DERECHO: Vehículos en alquiler === -->
-    <div class="col-lg-8 col-md-7 col-12">
-      <h3 class="mb-4 text-center">MIS VEHÍCULOS</h3>
-      <div class="row g-3">
-        <div class="col-lg-6 col-md-12 mb-4" *ngFor="let al of user.alquileres">
-          <div class="card shadow-sm h-100">
-            <!-- Fecha de renovación en la cabecera de la tarjeta -->
-            <div class="card-header bg-transparent">
-              <small class="text-muted">
-                Fecha de renovación: {{ getRenewalDate(al) }}
-              </small>
+      <!-- Columna DERECHA: Grid de vehículos -->
+      <div class="col-lg-8 col-md-7 col-12 mb-4">
+        <div class="row row-cols-1 row-cols-md-2 gx-4 gy-4">
+          <ng-container *ngFor="let al of user.alquileres">
+            <div class="col d-flex">
+              <div class="card shadow-sm h-100 w-100 d-flex flex-column">
+                <div class="card-header bg-transparent">
+                  <small class="text-muted">
+                    Fecha de renovación: {{ getRenewalDate(al) }}
+                  </small>
+                </div>
+                <img
+                  [src]="al.vehiculo.imagenes[0]"
+                  class="card-img-top"
+                  [alt]="al.vehiculo.marca + ' ' + al.vehiculo.modelo"
+                  style="object-fit: cover; height: 180px;"
+                />
+                <div class="card-body flex-grow-1">
+                  <h5 class="card-title">{{ al.vehiculo.marca }} {{ al.vehiculo.modelo }}</h5>
+                  <p class="card-text text-muted small text-truncate">
+                    {{ al.vehiculo.category }} · {{ al.vehiculo.fuel }} · {{ al.vehiculo.transmission }}
+                  </p>
+                </div>
+                <div class="card-footer bg-transparent mt-auto text-center">
+                  <button
+                    class="btn btn-danger btn-sm w-100"
+                    (click)="onCancelRenewal(al)"
+                    [disabled]="!al.renovacionAutomatica"
+                  >
+                    Cancelar Renovación
+                  </button>
+                </div>
+              </div>
             </div>
-            <img
-              [src]="al.vehiculo.imagenes[0]"
-              class="card-img-top"
-              [alt]="al.vehiculo.marca + ' ' + al.vehiculo.modelo"
-              style="object-fit: cover; height: 220px;"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ al.vehiculo.marca }} {{ al.vehiculo.modelo }}</h5>
-              <p class="card-text">
-                <small class="text-muted">
-                  {{ al.vehiculo.category }} · {{ al.vehiculo.fuel }} · {{ al.vehiculo.transmission }}
-                </small>
-              </p>
-            </div>
-            <div class="card-footer bg-transparent text-center">
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="onCancelRenewal(al)"
-                [disabled]="!al.renovacionAutomatica"
-              >
-                Cancelar Renovación
-              </button>
-            </div>
+          </ng-container>
+
+          <!-- Mensaje si no hay alquileres -->
+          <div *ngIf="user.alquileres.length === 0" class="col-12 text-center mt-5">
+            <p class="text-muted">No tienes vehículos alquilados actualmente.</p>
           </div>
         </div>
-
-        <!-- Si no hay alquileres, mostramos un mensaje -->
-        <div *ngIf="user.alquileres.length === 0" class="col-12 text-center mt-5">
-          <p class="text-muted">No tienes vehículos alquilados actualmente.</p>
-        </div>
       </div>
+
     </div>
   </div>
 </div>
+

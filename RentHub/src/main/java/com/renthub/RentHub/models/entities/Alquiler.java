@@ -64,6 +64,9 @@ public class Alquiler {
     )
     @JsonIgnoreProperties("alquiler")
     private List<Pago> pagos = new ArrayList<>();
+
+    public Alquiler() {
+    }
     
     
 
