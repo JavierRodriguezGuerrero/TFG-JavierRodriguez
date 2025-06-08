@@ -33,6 +33,8 @@ public class AlquilerService {
     private PagoRepository pagoRepo;
    @Autowired 
    private UserRepository userRepo;
+   @Autowired 
+   private EmailService emailService;
 
     /**
      * Desactiva la renovación automática en el alquiler indicado.
@@ -79,6 +81,7 @@ public class AlquilerService {
       p.setCvv(Integer.parseInt(cvv));
       p.setFechaTarjeta(expiry);
       pagoRepo.save(p);
+      emailService.sendRentalConfirmation(u, v, al);
     }
     
 }
