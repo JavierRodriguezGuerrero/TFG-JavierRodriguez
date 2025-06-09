@@ -10,6 +10,8 @@ import { RoleGuard } from './guards/role.guard';
 import { ComparadorComponent } from './comparador/comparador.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { PurchaseComponent } from './purchase/purchase.component';
+import { NewDireccionComponent } from './new-direccion/new-direccion.component';
+import { EditDireccionComponent } from './edit-direccion/edit-direccion.component';
 
 export const routes: Routes = [
 
@@ -35,6 +37,8 @@ export const routes: Routes = [
     { path: 'login',      component: LoginComponent },
     { path: 'register',   component: RegisterComponent },
     { path: 'comparador',   component: ComparadorComponent },
+    { path: 'direccion/nueva', component: NewDireccionComponent },
+    { path: 'direccion/editar/:iddireccion', component: EditDireccionComponent },
     { path: '**',         redirectTo: '' }
 
 

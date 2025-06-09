@@ -115,6 +115,9 @@ public class SpringSecurityConfig {
             .requestMatchers(HttpMethod.DELETE, "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.GET,    "/test-email").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+            .requestMatchers(HttpMethod.GET, "/users/me/direccion").authenticated()
+            .requestMatchers(HttpMethod.POST, "/users/me/direccion").authenticated()
+            .requestMatchers(HttpMethod.PUT, "/users/me/direccion").authenticated()
         // Cancelar renovación requiere autenticación
             .requestMatchers(HttpMethod.PUT, "/alquiler/**").authenticated()
             .requestMatchers("/admin/**").hasRole("ADMIN")
