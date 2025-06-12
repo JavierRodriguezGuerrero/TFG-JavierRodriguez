@@ -22,6 +22,8 @@ import { AuthService }                   from '../services/auth.service';
 })
 export class RegisterComponent implements OnInit {
   form!: FormGroup;
+  showSuccess = false;
+  showError   = false;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +33,14 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(4)]],
+      username: [
+        '', 
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.email        // ← validación de formato email
+        ]
+      ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       name:     ['', Validators.required],
       lastName: ['', Validators.required]
@@ -41,14 +50,22 @@ export class RegisterComponent implements OnInit {
   onRegister(): void {
     if (this.form.invalid) return;
     this.auth.register(this.form.value).subscribe({
-      next: () => {
-        alert('Registro exitoso, ya puedes iniciar sesión.');
-        this.router.navigate(['/login']);
-      },
-      error: err => {
-        console.error(err);
-        alert('Error al registrar usuario.');
-      }
+      next: () => this.showSuccess = true,
+      error: () => this.showError   = true
     });
   }
+
+  closeSuccess(): void {
+    this.showSuccess = false;
+  }
+
+  goToLogin(): void {
+    this.showSuccess = false;
+    this.router.navigate(['/login']);
+  }
+
+  closeError(): void {
+    this.showError = false;
+  }
 }
+

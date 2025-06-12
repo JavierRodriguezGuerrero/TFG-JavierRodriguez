@@ -1,0 +1,6 @@
+.modal-backdrop.show {
+  opacity: 0.5;
+}
+.modal.show {
+  background-color: rgba(0,0,0,0.2);
+}

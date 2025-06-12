@@ -1,45 +1,121 @@
 <div class="container mt-5">
-  <h2 class="mb-4">Registro de Usuario</h2>
-  <form [formGroup]="form" (ngSubmit)="onRegister()">
-    <div class="mb-3">
-      <label class="form-label">Usuario</label>
-      <input
-        class="form-control"
-        formControlName="username"
-        placeholder="Nombre de usuario"
-      />
+  <div class="card mx-auto shadow" style="max-width: 500px;">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">Registro de Usuario</h2>
+      <form [formGroup]="form" (ngSubmit)="onRegister()">
+        <!-- Email/Usuario -->
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            class="form-control"
+            formControlName="username"
+            placeholder="usuario@correo.com"
+          />
+          <div *ngIf="form.get('username')?.touched && form.get('username')?.hasError('required')" class="text-danger small">
+            El email es obligatorio.
+          </div>
+          <div *ngIf="form.get('username')?.touched && form.get('username')?.hasError('minlength')" class="text-danger small">
+            Mínimo 4 caracteres.
+          </div>
+          <div *ngIf="form.get('username')?.touched && form.get('username')?.hasError('email')" class="text-danger small">
+            Debe tener formato de correo electrónico.
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Contraseña"
+          />
+          <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-danger small">
+            Mínimo 6 caracteres.
+          </div>
+        </div>
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input
+            class="form-control"
+            formControlName="name"
+            placeholder="Nombre"
+          />
+          <div *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="text-danger small">
+            Requerido.
+          </div>
+        </div>
+
+        <!-- Apellido -->
+        <div class="mb-3">
+          <label class="form-label">Apellido</label>
+          <input
+            class="form-control"
+            formControlName="lastName"
+            placeholder="Apellido"
+          />
+          <div *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid" class="text-danger small">
+            Requerido.
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="form.invalid"
+        >
+          Registrar
+        </button>
+      </form>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Contraseña</label>
-      <input
-        type="password"
-        class="form-control"
-        formControlName="password"
-        placeholder="Contraseña"
-      />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Nombre</label>
-      <input
-        class="form-control"
-        formControlName="name"
-        placeholder="Nombre"
-      />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Apellido</label>
-      <input
-        class="form-control"
-        formControlName="lastName"
-        placeholder="Apellido"
-      />
-    </div>
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="form.invalid"
-    >
-      Registrar
-    </button>
-  </form>
+  </div>
 </div>
+
+<!-- Modal Éxito -->
+<div class="modal fade" tabindex="-1"
+     [class.show]="showSuccess"
+     [ngStyle]="{'display': showSuccess ? 'block' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-success">¡Registro exitoso!</h5>
+        <button type="button" class="btn-close" (click)="closeSuccess()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Tu cuenta se ha creado correctamente. Ahora puedes iniciar sesión.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success w-100" (click)="goToLogin()">
+          Ir a Iniciar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showSuccess" *ngIf="showSuccess"></div>
+
+<!-- Modal Error -->
+<div class="modal fade" tabindex="-1"
+     [class.show]="showError"
+     [ngStyle]="{'display': showError ? 'block' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">Error al registrar</h5>
+        <button type="button" class="btn-close" (click)="closeError()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Ha ocurrido un error al crear la cuenta. Por favor, inténtalo de nuevo.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary w-100" (click)="closeError()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showError" *ngIf="showError"></div>
