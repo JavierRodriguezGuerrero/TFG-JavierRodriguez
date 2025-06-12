@@ -88,5 +88,8 @@ public class VehiculoService {
         return vehiculoRepository.save(v);
     }
     
+    public void deleteVehiculo(Long id) {
+        vehiculoRepository.deleteById(id);
+    }
     
 }

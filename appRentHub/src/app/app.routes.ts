@@ -12,6 +12,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { NewDireccionComponent } from './new-direccion/new-direccion.component';
 import { EditDireccionComponent } from './edit-direccion/edit-direccion.component';
+import { AdminVehiculosComponent } from './admin-vehiculos/admin-vehiculos.component';
 
 export const routes: Routes = [
 
@@ -21,6 +22,12 @@ export const routes: Routes = [
     { 
         path: 'admin', 
         component: AdminComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ROLE_ADMIN'] }
+    },
+    { 
+        path: 'admin/vehiculos', 
+        component: AdminVehiculosComponent,
         canActivate: [RoleGuard],
         data: { roles: ['ROLE_ADMIN'] }
     },
