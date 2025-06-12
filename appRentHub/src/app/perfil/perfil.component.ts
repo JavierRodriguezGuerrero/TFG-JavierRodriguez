@@ -69,5 +69,8 @@ export class PerfilComponent implements OnInit {
     this.authService.logout();
   }
 
+  public hasRole(role: string): boolean {
+    return this.authService.hasRole(role);
+  }
 
 }

@@ -68,6 +68,13 @@
             >
               Editar Dirección
             </a>
+            <a
+              *ngIf="hasRole('ROLE_ADMIN')"
+              routerLink="/admin/vehiculos"
+              class="btn btn-outline-secondary w-100"
+            >
+              Admin Panel
+            </a>
             <button class="btn btn-danger w-100" (click)="onLogout()">
               Cerrar sesión
             </button>

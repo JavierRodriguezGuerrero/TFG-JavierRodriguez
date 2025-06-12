@@ -6,7 +6,12 @@
     <p>Cargando vehículos…</p>
   </div>
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-
+  <a
+     routerLink="/admin"
+     class="btn btn-outline-secondary w-100"
+      style="margin-bottom: 20px;">
+      Añadir Vehiculo
+  </a>
   <table *ngIf="!loading && !error" class="table table-striped table-hover">
     <thead class="table-dark">
       <tr>
