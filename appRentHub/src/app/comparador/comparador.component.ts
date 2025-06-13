@@ -15,6 +15,8 @@ interface CarRaw {
   category:     string;
   transmission: string;
   imagenes:     string[];
+  disponible:   boolean;
+  descripcion:  string;  
 }
 
 interface Car {
@@ -26,6 +28,8 @@ interface Car {
   category:     string;
   transmission: string;
   images:       string[];  // ← ahora guardamos todas
+  available:    boolean; 
+  descripcion:  string; 
 }
 
 
@@ -56,9 +60,13 @@ export class ComparadorComponent implements OnInit {
   }
 
   private fetchCars(): Observable<Car[]> {
-    return this.http.get<CarRaw[]>(this.API_URL).pipe(
-      map(raws =>
-        raws.map(raw => ({
+  return this.http.get<CarRaw[]>(this.API_URL).pipe(
+    map(raws =>
+      raws
+        // 1) filtramos sólo los disponibles:
+        .filter(raw => raw.disponible)
+        // 2) y luego hacemos el map a Car:
+        .map(raw => ({
           idvehiculo:   raw.idvehiculo,
           name:         raw.modelo,
           brand:        raw.marca,
@@ -68,11 +76,13 @@ export class ComparadorComponent implements OnInit {
           transmission: raw.transmission,
           images:       raw.imagenes && raw.imagenes.length > 0
                           ? raw.imagenes
-                          : ['https://via.placeholder.com/300x180']
+                          : ['https://via.placeholder.com/300x180'],
+          available:    raw.disponible,
+          descripcion:  raw.descripcion
         }))
-      )
-    );
-  }
+    )
+  );
+}
 
   selectVehicle(car: Car, side: 'left' | 'right'): void {
     if (side === 'left') {

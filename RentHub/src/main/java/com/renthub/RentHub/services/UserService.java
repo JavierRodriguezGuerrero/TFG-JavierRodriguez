@@ -41,6 +41,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    @Autowired
+    private EmailService emailService; 
+    
      public UserService(UserRepository u, RoleRepository r, PasswordEncoder e) {
         this.userRepository = u;
         this.roleRepository = r;
@@ -96,6 +99,7 @@ public class UserService {
     Role roleUser = roleRepository.findByName("ROLE_AUTONOMA")
                      .orElseThrow(() -> new RuntimeException("Roles no inicializados"));
     u.getRoles().add(roleUser);
+    emailService.sendRegistrationEmail(username,name);
     return userRepository.save(u);
   }
 

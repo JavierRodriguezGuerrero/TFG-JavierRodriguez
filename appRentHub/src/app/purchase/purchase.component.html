@@ -2,8 +2,15 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow-sm">
-        <div class="card-header text-center">
-          <h4>Pago con Tarjeta</h4>
+        <div class="card-header text-center d-flex justify-content-center align-items-center">
+          <h4 class="mb-0">Pago con Tarjeta</h4>
+          <img 
+            *ngIf="form.get('cardNumber')?.valid"
+            [src]="cardIconUrl"
+            alt="Logo tarjeta"
+            class="ms-2"
+            style="width: 32px; height: auto;"
+          />
         </div>
         <div class="card-body">
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -15,10 +22,11 @@
                 type="text"
                 class="form-control"
                 placeholder="1234123412341234"
+                maxlength="16"
               />
               <div
                 *ngIf="form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched"
-                class="text-danger small"
+                class="text-danger small mt-1"
               >
                 Debe ser un número de 16 dígitos.
               </div>
@@ -36,7 +44,7 @@
                 />
                 <div
                   *ngIf="form.get('expiry')?.invalid && form.get('expiry')?.touched"
-                  class="text-danger small"
+                  class="text-danger small mt-1"
                 >
                   Formato inválido.
                 </div>
@@ -48,19 +56,15 @@
                   type="password"
                   class="form-control"
                   placeholder="123"
+                  maxlength="3"
                 />
                 <div
                   *ngIf="form.get('cvv')?.invalid && form.get('cvv')?.touched"
-                  class="text-danger small"
+                  class="text-danger small mt-1"
                 >
                   3 dígitos.
                 </div>
               </div>
-            </div>
-
-            <!-- Error genérico -->
-            <div *ngIf="error" class="alert alert-danger">
-              {{ error }}
             </div>
 
             <!-- Botón -->
@@ -77,3 +81,61 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Éxito -->
+<div class="modal fade" tabindex="-1" [class.show]="showSuccess" [ngStyle]="{display: showSuccess ? 'block' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-success">¡Pago realizado!</h5>
+        <button type="button" class="btn-close" (click)="closeSuccess()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Tu alquiler y pago se han registrado correctamente.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success w-100" (click)="closeSuccess()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" *ngIf="showSuccess" [class.show]="showSuccess"></div>
+
+<!-- Modal Error -->
+<div class="modal fade" tabindex="-1" [class.show]="showError" [ngStyle]="{display: showError ? 'block' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">Error al procesar</h5>
+        <button type="button" class="btn-close" (click)="closeError()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Ha ocurrido un error al procesar tu pago. Inténtalo de nuevo.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary w-100" (click)="closeError()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" *ngIf="showError" [class.show]="showError"></div>
+
+<!-- Modal Sin Dirección -->
+<div class="modal fade" tabindex="-1" [class.show]="showNoAddress" [ngStyle]="{display: showNoAddress ? 'block' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-warning">
+      <div class="modal-header">
+        <h5 class="modal-title text-warning">Completa tu dirección</h5>
+        <button type="button" class="btn-close" (click)="closeNoAddress()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Debes añadir una dirección en tu perfil antes de realizar un pago.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-warning w-100" (click)="closeNoAddress()">Añadir dirección</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" *ngIf="showNoAddress" [class.show]="showNoAddress"></div>
+

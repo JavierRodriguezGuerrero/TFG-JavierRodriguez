@@ -16,6 +16,7 @@ interface CarRaw {
   category:     string;
   transmission: string;
   imagenes:     string[];
+  disponible:   boolean; 
 }
 
 interface Car {
@@ -58,9 +59,10 @@ export class CatalogoComponent implements OnInit{
 
   private fetchCars(): Observable<Car[]> {
     return this.http.get<CarRaw[]>(this.API_URL).pipe(
+      map(raws => raws.filter(raw => raw.disponible)),
       map(raws =>
         raws.map(raw => ({
-          idvehiculo:   raw.idvehiculo, 
+          idvehiculo:   raw.idvehiculo,
           name:         raw.modelo,
           brand:        raw.marca,
           price:        raw.precioMes,

@@ -29,10 +29,7 @@ public class AlquilerController {
     @Autowired
     private AlquilerService alquilerService;
 
-    /**
-     * PUT /alquiler/{id}/cancelRenewal
-     * Cancela la renovación automática para ese alquiler.
-     */
+    
     @PutMapping("/{id}/cancelRenewal")
     public ResponseEntity<Void> cancelRenewal(@PathVariable("id") Long idAlquiler) {
         alquilerService.cancelRenewal(idAlquiler);
@@ -44,7 +41,7 @@ public class AlquilerController {
         @RequestBody Map<String,Object> body,
         @AuthenticationPrincipal UserDetails userDetails
     ) {
-      // Extraemos y validamos las entradas
+      
       Long vehiculoId = Long.valueOf(body.get("vehiculoId").toString());
       String cardNumber = body.get("cardNumber").toString();
       String expiry     = body.get("expiry").toString();

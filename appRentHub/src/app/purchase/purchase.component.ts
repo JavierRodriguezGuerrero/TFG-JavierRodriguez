@@ -1,5 +1,5 @@
 import { Component, OnInit }               from '@angular/core';
-import { CommonModule, formatDate }        from '@angular/common';
+import { CommonModule }                    from '@angular/common';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -9,6 +9,7 @@ import {
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 
 import { RentalService }                   from '../services/rental.service';
+import { UserService, UserProfile }        from '../services/user.service';
 
 @Component({
   selector: 'app-purchase',
@@ -19,21 +20,28 @@ import { RentalService }                   from '../services/rental.service';
     RouterModule
   ],
   templateUrl: './purchase.component.html',
-  styleUrl: './purchase.component.css'
+  styleUrls: ['./purchase.component.css']
 })
 export class PurchaseComponent implements OnInit {
-  form!: FormGroup;           // <-- sin inicializar aquí
+  form: FormGroup;
   vehiculoId!: number;
   loading = false;
   error: string | null = null;
 
+  // Flags para modales
+  showSuccess    = false;
+  showError      = false;
+  showNoAddress  = false;
+
+  hasAddress = false;
+
   constructor(
-    private fb: FormBuilder,         // inyectado antes de usarlo
+    private fb: FormBuilder,
     private rentalService: RentalService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Inicializamos el form **dentro** del constructor
     this.form = this.fb.group({
       cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
       expiry:     ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
@@ -43,9 +51,31 @@ export class PurchaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.vehiculoId = Number(this.route.snapshot.paramMap.get('idvehiculo'));
+
+    // Cargamos perfil para saber si tiene dirección
+    this.userService.getProfile().subscribe({
+      next: (u: UserProfile) => this.hasAddress = !!u.direccion,
+      error: () => this.hasAddress = false
+    });
+  }
+
+  /** Devuelve la clase de icono según la tarjeta */
+  get cardIconUrl(): string {
+    const num = this.form.get('cardNumber')?.value as string;
+    if (/^4/.test(num)) {
+      return 'cc-visa-brands-solid.svg';
+    }
+    if (/^5/.test(num)) {
+      return 'cc-mastercard-brands-solid.svg';
+    }
+    return 'credit-card-solid.svg';  // si quieres un genérico
   }
 
   onSubmit(): void {
+    if (!this.hasAddress) {
+      this.showNoAddress = true;
+      return;
+    }
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -53,6 +83,7 @@ export class PurchaseComponent implements OnInit {
 
     const { cardNumber, expiry, cvv } = this.form.value;
     this.loading = true;
+    this.error   = null;
 
     this.rentalService.rent({
       vehiculoId: this.vehiculoId,
@@ -62,14 +93,27 @@ export class PurchaseComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.loading = false;
-        alert('Alquiler y pago registrados correctamente');
-        this.router.navigate(['/perfil']);
+        this.showSuccess = true;
       },
       error: err => {
         console.error(err);
         this.loading = false;
-        this.error = 'Error al procesar el pago. Intenta de nuevo.';
+        this.showError = true;
       }
     });
+  }
+
+  closeSuccess(): void {
+    this.showSuccess = false;
+    this.router.navigate(['/perfil']);
+  }
+
+  closeError(): void {
+    this.showError = false;
+  }
+
+  closeNoAddress(): void {
+    this.showNoAddress = false;
+    this.router.navigate(['/direccion/nueva']);
   }
 }

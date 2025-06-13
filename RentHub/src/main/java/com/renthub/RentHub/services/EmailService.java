@@ -40,7 +40,7 @@ public class EmailService {
             String html = "<!DOCTYPE html>"
                 + "<html><body style=\"font-family:Arial,sans-serif;color:#333;\">"
 
-                // Logo al principio
+                
                 + "<div style=\"text-align:center;margin-bottom:20px;\">"
                 + "  <img src=\"" + logoUrl + "\""
                 + "       alt=\"RentHub Logo\""
@@ -92,4 +92,35 @@ public class EmailService {
             throw new RuntimeException("Error al enviar email de confirmación", ex);
         }
     }
+    
+    public void sendRegistrationEmail(String user,String name) {
+        String subject = "Bienvenido a RentHub, " + name + "!";
+        
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body>");
+        html.append("<div style='text-align:center;'>")
+            .append("<img src='http://localhost:4200/logorent.jpg' ")
+            .append("alt='RentHub' style='max-width:200px;margin-bottom:20px;'/>")
+            .append("</div>");
+        html.append("<h2>¡Hola, ").append(user).append("!</h2>");
+        html.append("<p>Gracias por registrarte en <strong>RentHub</strong>. ")
+            .append("Ahora ya puedes acceder a nuestro catálogo y disfrutar de las mejores opciones de alquiler.</p>");
+        html.append("<p>En breve recibirás novedades y ofertas exclusivas.</p>");
+        html.append("<br/><p>Saludos cordiales,<br/>El equipo de RentHub</p>");
+        html.append("</body></html>");
+
+        MimeMessage msg = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+            helper.setFrom(from);
+            helper.setTo(user);
+            helper.setSubject(subject);
+            helper.setText(html.toString(), true);
+            mailSender.send(msg);
+        } catch (MessagingException e) {
+            System.err.println("Error enviando email de registro: " + e.getMessage());
+        }
+    }
+    
+    
 }
