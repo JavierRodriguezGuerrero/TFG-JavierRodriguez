@@ -13,7 +13,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     const creds = btoa(`${username}:${password}`);
-    // probamos con Basic Auth
+    
     return this.http.post(`${this.api}/login`,
       { username, password },
       { headers: { Authorization: `Basic ${creds}` } }

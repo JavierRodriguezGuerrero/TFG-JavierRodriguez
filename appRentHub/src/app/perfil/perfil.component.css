@@ -4,14 +4,12 @@
   flex-direction: column;
 }
 
-/* Trunca texto demasiado largo en una sola línea */
 .text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Títulos uniformes */
 .card-title {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;

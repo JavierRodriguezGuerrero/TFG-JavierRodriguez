@@ -69,7 +69,7 @@ public class VehiculoService {
         v.setDescripcion(descripcion);
 
         List<String> urls = new ArrayList<>();
-        // Asegúrate de que la carpeta existe
+        
         Files.createDirectories(Paths.get(uploadDir));
 
         for (MultipartFile file : imagenes) {
@@ -80,7 +80,7 @@ public class VehiculoService {
             String filename = UUID.randomUUID() + ext;
             Path target = Paths.get(uploadDir).resolve(filename);
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
-            // Guardamos la ruta relativa (servirá como URL)
+            
             urls.add("http://localhost:8080/images/" + filename);
         }
         v.setImagenes(urls);

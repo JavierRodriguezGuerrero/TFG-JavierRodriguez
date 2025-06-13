@@ -16,7 +16,7 @@ import { DireccionService, Direccion }            from '../services/direccion.se
   templateUrl: './edit-direccion.component.html',
 })
 export class EditDireccionComponent implements OnInit {
-  form!: FormGroup;   // sin inicializar aquí
+  form!: FormGroup;   
   id!: number;
 
   constructor(
@@ -25,7 +25,7 @@ export class EditDireccionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // inicializamos el formulario _después_ de inyectar fb
+    
     this.form = this.fb.group({
       calle:        ['', Validators.required],
       ciudad:       ['', Validators.required],

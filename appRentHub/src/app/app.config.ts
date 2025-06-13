@@ -11,19 +11,19 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
 
-    // en lugar de provideHttpClient(), usamos withInterceptorsFromDi()
+    
     provideHttpClient(
-      withInterceptorsFromDi()      // esto recoge todos los HTTP_INTERCEPTORS registrados
+      withInterceptorsFromDi()      
     ),
 
-    // registramos nuestro interceptor
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BasicAuthInterceptor,
       multi: true
     },
 
-    // para ngModel en formularios
+    
     importProvidersFrom(FormsModule)
   ]
 };

@@ -33,7 +33,7 @@ public class DireccionController {
     @Autowired private UserRepository userRepo;
     @Autowired private DireccionRepository dirRepo;
 
-    /** Obtiene la dirección del usuario autenticado (o 404 si no existe) */
+    
     @GetMapping
     public ResponseEntity<Direccion> getDireccion(@AuthenticationPrincipal UserDetails ud) {
         User u = userRepo.findByUsername(ud.getUsername())
@@ -42,21 +42,21 @@ public class DireccionController {
         return d != null ? ResponseEntity.ok(d) : ResponseEntity.notFound().build();
     }
 
-    /** Crea (o sobrescribe) la dirección del usuario autenticado */
+    
     @PostMapping
     public ResponseEntity<Direccion> createDireccion(
             @AuthenticationPrincipal UserDetails ud,
             @RequestBody Direccion nueva
     ) {
         User u = userRepo.findByUsername(ud.getUsername()).orElseThrow();
-        // Persistir la nueva dirección
+        
         Direccion saved = dirRepo.save(nueva);
         u.setDireccion(saved);
         userRepo.save(u);
         return ResponseEntity.ok(saved);
     }
 
-    /** Actualiza la dirección existente */
+    
     @PutMapping("/{id}")
     public ResponseEntity<Direccion> updateDireccion(
             @AuthenticationPrincipal UserDetails ud,
@@ -68,7 +68,7 @@ public class DireccionController {
         if (actual == null || !actual.getIddireccion().equals(id)) {
             return ResponseEntity.notFound().build();
         }
-        // Aplicar cambios
+        
         actual.setCalle(cambios.getCalle());
         actual.setCiudad(cambios.getCiudad());
         actual.setCodigoPostal(cambios.getCodigoPostal());

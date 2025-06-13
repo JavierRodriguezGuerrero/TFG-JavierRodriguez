@@ -22,7 +22,7 @@ export class AdminComponent {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient       // HttpClient ya está disponible
+    private http: HttpClient       
   ) {}
 
   ngOnInit(): void {

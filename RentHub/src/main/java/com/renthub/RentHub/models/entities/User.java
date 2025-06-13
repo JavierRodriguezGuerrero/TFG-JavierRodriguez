@@ -66,10 +66,10 @@ public class User {
     
     @OneToOne(optional = true, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(
-            name = "iddireccion", // columna FK en la tabla users
+            name = "iddireccion", 
             referencedColumnName = "iddireccion",
-            unique = true, // una dirección solo puede asignarse a un user
-            nullable = true // user sin dirección posible
+            unique = true, 
+            nullable = true 
     )
     private Direccion direccion;
     

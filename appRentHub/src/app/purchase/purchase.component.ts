@@ -28,7 +28,7 @@ export class PurchaseComponent implements OnInit {
   loading = false;
   error: string | null = null;
 
-  // Flags para modales
+  
   showSuccess    = false;
   showError      = false;
   showNoAddress  = false;
@@ -52,14 +52,14 @@ export class PurchaseComponent implements OnInit {
   ngOnInit(): void {
     this.vehiculoId = Number(this.route.snapshot.paramMap.get('idvehiculo'));
 
-    // Cargamos perfil para saber si tiene dirección
+    
     this.userService.getProfile().subscribe({
       next: (u: UserProfile) => this.hasAddress = !!u.direccion,
       error: () => this.hasAddress = false
     });
   }
 
-  /** Devuelve la clase de icono según la tarjeta */
+  
   get cardIconUrl(): string {
     const num = this.form.get('cardNumber')?.value as string;
     if (/^4/.test(num)) {
@@ -68,7 +68,7 @@ export class PurchaseComponent implements OnInit {
     if (/^5/.test(num)) {
       return 'cc-mastercard-brands-solid.svg';
     }
-    return 'credit-card-solid.svg';  // si quieres un genérico
+    return 'credit-card-solid.svg';  
   }
 
   onSubmit(): void {

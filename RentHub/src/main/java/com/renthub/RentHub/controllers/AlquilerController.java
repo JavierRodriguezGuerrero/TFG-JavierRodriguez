@@ -47,7 +47,7 @@ public class AlquilerController {
       String expiry     = body.get("expiry").toString();
       String cvv        = body.get("cvv").toString();
 
-      // (Aquí podrías lanzar excepciones si no cumplen patrón, por ejemplo)
+      
       alquilerService.rentVehicle(vehiculoId, cardNumber, expiry, cvv, userDetails.getUsername());
       return ResponseEntity.ok().build();
     }

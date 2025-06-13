@@ -10,9 +10,9 @@ export class AlquilerService {
 
   constructor(private http: HttpClient) {}
 
-  /** Cancela la renovación automática para un alquiler dado */
+  
   cancelRenewal(idAlquiler: number): Observable<void> {
-    // Ajusta la URL según tu backend. En este ejemplo:
+    
     return this.http.put<void>(`${this.API}/alquiler/${idAlquiler}/cancelRenewal`, {});
   }
 }

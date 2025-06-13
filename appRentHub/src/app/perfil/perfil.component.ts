@@ -39,23 +39,17 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  /**  
-   * Devuelve un string con la fecha de renovación formateada.  
-   * Si no hay renovación, devuelve un texto alternativo.  
-   */
+  
   getRenewalDate(al: Alquiler): string {
     if (al.renovacionAutomatica) {
-      // Por ejemplo, formatea fechaFin como 'dd-MM-yyyy'
       return formatDate(al.fechaFin, 'dd-MM-yyyy', 'es-ES');
     }
     return 'Renovación desactivada';
   }
 
-  /** Invoca el servicio para cancelar la renovación y refresca la lista localmente */
   onCancelRenewal(al: Alquiler): void {
     this.alquilerService.cancelRenewal(al.idalquiler).subscribe({
       next: () => {
-        // Marca localmente que esta renovación ya no está activa 
         al.renovacionAutomatica = false;
       },
       error: err => {

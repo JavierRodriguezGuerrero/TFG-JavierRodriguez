@@ -24,7 +24,7 @@ export interface Vehiculo {
 
 export interface Alquiler {
   idalquiler:          number;
-  fechaInicio:         string; // puedes ajustar el tipo si lo parseas a Date
+  fechaInicio:         string; 
   fechaFin:            string;
   renovacionAutomatica: boolean;
   vehiculo:            Vehiculo;
@@ -47,7 +47,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  /** Obtiene el perfil (usuario + dirección + alquileres) */
+  
   getProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${this.API}/users/me`);
   }

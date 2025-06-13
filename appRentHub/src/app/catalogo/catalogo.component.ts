@@ -81,7 +81,7 @@ export class CatalogoComponent implements OnInit{
   }
 
   get displayedCars(): Car[] {
-    const maxPrice = this.filterMaxPrice;      // capturamos en local
+    const maxPrice = this.filterMaxPrice;      
     let arr = [...this.cars];
 
     if (this.filterBrand) {

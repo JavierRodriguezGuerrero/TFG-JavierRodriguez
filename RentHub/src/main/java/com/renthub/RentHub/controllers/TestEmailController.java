@@ -27,7 +27,7 @@ public class TestEmailController {
     emailService.sendRentalConfirmation(
       new User("javier.rodriguez.guerrero.alu@iesjulioverne.es", "Prueba"), 
       new Vehiculo(), 
-      new Alquiler(/* rellenar mínimos campos */)
+      new Alquiler()
     );
     return ResponseEntity.ok().build();
   }

@@ -24,10 +24,7 @@ public class ProfileController {
     @Autowired
     private UserService userService;
 
-    /**
-     * GET /users/me
-     * Devuelve el objeto User completo (incluyendo su dirección y alquileres).
-     */
+    
     @GetMapping("/me")
     public ResponseEntity<User> getMyProfile() {
         User user = userService.getCurrentUserWithRelations();

@@ -21,13 +21,13 @@ export class InicioComponent implements AfterViewInit {
   carouselInstance!: any;
 
   ngAfterViewInit(): void {
-    // 1) Inicializa el carousel sin autoplay de slides
+    
     this.carouselInstance = new bootstrap.Carousel(
       this.carousel.nativeElement,
       { interval: false }
     );
 
-    // 2) Auto-play del primer vídeo cuando sus metadatos estén listos
+    
     this.firstVideo.nativeElement.addEventListener(
       'loadedmetadata',
       () => {
@@ -38,19 +38,19 @@ export class InicioComponent implements AfterViewInit {
           );
       }
     );
-    // fuerza carga y mute (por si acaso)
+    
     this.firstVideo.nativeElement.load();
     this.firstVideo.nativeElement.muted = true;
 
-    // 3) Al cambiar de slide, pausa todos y reproduce sólo el activo
+    
     this.carousel.nativeElement.addEventListener(
       'slid.bs.carousel',
       () => {
-        // pausa todos
+        
         this.videoPlayers.forEach(v => v.nativeElement.pause());
         this.videoPlayers.forEach(v => (v.nativeElement.muted = true));
 
-        // el que tenga la clase .active
+       
         const el = this.carousel.nativeElement.querySelector(
           '.carousel-item.active video'
         );

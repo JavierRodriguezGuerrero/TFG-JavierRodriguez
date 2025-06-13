@@ -16,14 +16,14 @@ import { DireccionService } from '../services/direccion.service';
   templateUrl: './new-direccion.component.html',
 })
 export class NewDireccionComponent {
-  form: FormGroup;   // sin inicializar aquí
+  form: FormGroup;   
 
   constructor(
     private fb: FormBuilder,
     private dirService: DireccionService,
     private router: Router
   ) {
-    // inicializamos el formulario _después_ de inyectar fb
+    
     this.form = this.fb.group({
       calle:        ['', Validators.required],
       ciudad:       ['', Validators.required],

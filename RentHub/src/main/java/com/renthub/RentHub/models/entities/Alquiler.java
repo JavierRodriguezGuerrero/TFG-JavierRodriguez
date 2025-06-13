@@ -41,9 +41,9 @@ public class Alquiler {
     
     @ManyToOne(optional = true)
     @JoinColumn(
-        name = "iduser",             // FK en tabla alquiler
+        name = "iduser",             
         referencedColumnName = "iduser",
-        nullable = true              // el alquiler podría no estar asignado aún
+        nullable = true              
     )
     @JsonIgnoreProperties("alquileres")
     private User user;
@@ -53,7 +53,7 @@ public class Alquiler {
     @JoinColumn(
         name = "idvehiculo",
         referencedColumnName = "idvehiculo",
-        nullable = false         // impide crear Alquiler sin Vehiculo
+        nullable = false         
     )
     private Vehiculo vehiculo;
     

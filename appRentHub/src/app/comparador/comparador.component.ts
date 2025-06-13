@@ -27,7 +27,7 @@ interface Car {
   fuel:         string;
   category:     string;
   transmission: string;
-  images:       string[];  // ← ahora guardamos todas
+  images:       string[];  
   available:    boolean; 
   descripcion:  string; 
 }
@@ -63,9 +63,9 @@ export class ComparadorComponent implements OnInit {
   return this.http.get<CarRaw[]>(this.API_URL).pipe(
     map(raws =>
       raws
-        // 1) filtramos sólo los disponibles:
+        
         .filter(raw => raw.disponible)
-        // 2) y luego hacemos el map a Car:
+        
         .map(raw => ({
           idvehiculo:   raw.idvehiculo,
           name:         raw.modelo,

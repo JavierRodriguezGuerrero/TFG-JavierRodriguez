@@ -84,7 +84,7 @@ public class UserService {
         return userRepository.save(usuario);
     }
     
-    /** Registro público */
+    
   public User register(String username, String rawPassword,
                        String name, String lastName) {
     if (userRepository.findByUsername(username).isPresent()) {
@@ -103,7 +103,7 @@ public class UserService {
     return userRepository.save(u);
   }
 
-  /** Spring Security: carga de usuario para la autenticación */
+  
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     User u = userRepository.findByUsername(username)
              .orElseThrow(() -> new UsernameNotFoundException(username));
@@ -122,16 +122,14 @@ public class UserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        // Asumimos que User.alquileres se carga Lazy. Para evitar problemas,
-        // podemos forzar la carga (por ejemplo, accediendo a user.getAlquileres().size())
+        
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Forzamos carga de colecciones: dirección ya está en EAGER (OneToOne),
-        // pero alquileres es LAZY. Podemos simplemente invocar size() para que se cargue.
+        
         if (user.getAlquileres() != null) {
             user.getAlquileres().size();
-            // Y para cada alquiler, queremos que su vehiculo e imágenes estén disponibles:
+            
             user.getAlquileres().forEach(al -> {
                 if (al.getVehiculo() != null) {
                     al.getVehiculo().getImagenes().size();

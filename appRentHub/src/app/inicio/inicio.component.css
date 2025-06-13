@@ -1,11 +1,9 @@
-/* El vídeo ocupará ancho completo y ajustará su altura */
 video {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* Transición suave al cambiar de altura */
 .carousel-inner {
   transition: height 0.3s ease;
 }

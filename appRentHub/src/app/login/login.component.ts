@@ -11,7 +11,7 @@ import { AuthService }                   from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  standalone: true,                       // <- imprescindible para usar imports aquí
+  standalone: true,                       
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -21,7 +21,7 @@ import { AuthService }                   from '../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  f!: FormGroup;                          // se inicializa en ngOnInit
+  f!: FormGroup;                          
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +39,6 @@ export class LoginComponent implements OnInit {
   onLogin(): void {
     if (this.f.invalid) return;
     const { username, password } = this.f.value;
-    this.auth.login(username, password);   // tu AuthService redirige al éxito
+    this.auth.login(username, password);   
   }
 }

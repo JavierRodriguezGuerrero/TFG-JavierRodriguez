@@ -28,7 +28,7 @@ public class CorsConfig {
     var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/auth/**", config);
     source.registerCorsConfiguration("/vehiculos/**", config);
-    // si necesitas aplicar a toda la API:
+    
     source.registerCorsConfiguration("/**", config);
 
     return new CorsFilter(source);

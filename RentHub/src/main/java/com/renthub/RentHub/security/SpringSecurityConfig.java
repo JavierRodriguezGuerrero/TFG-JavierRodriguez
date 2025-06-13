@@ -105,10 +105,10 @@ public class SpringSecurityConfig {
           .csrf(csrf -> csrf.disable())
           // 2) Define qué rutas son públicas
           .authorizeHttpRequests(auth -> auth
-            // Recursos estáticos (imágenes) públicos
+            
             .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
-            // Permite GET (y opcionalmente POST, PUT, DELETE) sobre /vehiculos y subrutas
+            
             .requestMatchers(HttpMethod.GET,    "/vehiculos",      "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.POST,   "/vehiculos",      "/vehiculos/**").permitAll()
             .requestMatchers(HttpMethod.PUT,    "/vehiculos/**").permitAll()
@@ -118,13 +118,11 @@ public class SpringSecurityConfig {
             .requestMatchers(HttpMethod.GET, "/users/me/direccion").authenticated()
             .requestMatchers(HttpMethod.POST, "/users/me/direccion").authenticated()
             .requestMatchers(HttpMethod.PUT, "/users/me/direccion").authenticated()
-        // Cancelar renovación requiere autenticación
+        
             .requestMatchers(HttpMethod.PUT, "/alquiler/**").authenticated()
             .requestMatchers(HttpMethod.DELETE, "/vehiculos/**").hasRole("ADMIN")
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            // Si tu API estuviera bajo /api/cars, añade aquí también:
-            // .requestMatchers("/api/cars/**").permitAll()
-            // El resto de rutas requiere autenticación
+            
             .anyRequest().authenticated()
           )
           // 3) Usa HTTP Basic (no formulario) para el resto de endpoints autenticados
@@ -162,7 +160,7 @@ public class SpringSecurityConfig {
       config.setMaxAge(3600L);
 
       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      // aplica CORS global a todas las rutas
+      
       source.registerCorsConfiguration("/**", config);
       return source;
     }
