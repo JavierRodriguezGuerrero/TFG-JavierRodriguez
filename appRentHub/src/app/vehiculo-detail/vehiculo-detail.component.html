@@ -1,10 +1,10 @@
 <div class="container my-5" *ngIf="vehiculo$ | async as v">
 
-  <!-- Título -->
+  
   <h1 class="mb-4">{{ v.marca }} {{ v.modelo }}</h1>
 
   <div class="row">
-    <!-- Carousel de imágenes -->
+    
     <div class="col-lg-8">
       <div id="carouselVehiculo" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <!-- Accordion para detalles -->
+      
       <div class="accordion" id="detallesAccordion">
 
         <div class="accordion-item">
@@ -85,8 +85,8 @@
           <div id="collapseTwo" class="accordion-collapse collapse" 
                aria-labelledby="headingTwo" data-bs-parent="#detallesAccordion">
             <div class="accordion-body">
-              <!-- Aquí podrías listar extras o características -->
-              Fuel: {{ v.fuel }}<br>
+              
+              Combustible: {{ v.fuel }}<br>
               Transmisión: {{ v.transmission }}
             </div>
           </div>

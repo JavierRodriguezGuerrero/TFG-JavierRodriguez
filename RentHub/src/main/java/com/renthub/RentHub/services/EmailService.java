@@ -36,7 +36,7 @@ public class EmailService {
             helper.setFrom(from);
             helper.setTo(user.getUsername());
             helper.setSubject("✨ Confirmación de tu alquiler #" + alquiler.getIdalquiler());
-            String logoUrl = "http://localhost:8080/images/logorent.jpg";
+            String logoUrl = "https://i.postimg.cc/DypXP3s4/logorent.jpg";
             String html = "<!DOCTYPE html>"
                 + "<html><body style=\"font-family:Arial,sans-serif;color:#333;\">"
 
@@ -99,10 +99,10 @@ public class EmailService {
         StringBuilder html = new StringBuilder();
         html.append("<html><body>");
         html.append("<div style='text-align:center;'>")
-            .append("<img src='http://localhost:4200/logorent.jpg' ")
+            .append("<img src='https://i.postimg.cc/DypXP3s4/logorent.jpg' ")
             .append("alt='RentHub' style='max-width:200px;margin-bottom:20px;'/>")
             .append("</div>");
-        html.append("<h2>¡Hola, ").append(user).append("!</h2>");
+        html.append("<h2>¡Hola, ").append(name).append("!</h2>");
         html.append("<p>Gracias por registrarte en <strong>RentHub</strong>. ")
             .append("Ahora ya puedes acceder a nuestro catálogo y disfrutar de las mejores opciones de alquiler.</p>");
         html.append("<p>En breve recibirás novedades y ofertas exclusivas.</p>");

@@ -13,3 +13,8 @@
 .carousel-inner img {
   max-height: 300px;
 }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: brightness(0) invert(50%);
+}
